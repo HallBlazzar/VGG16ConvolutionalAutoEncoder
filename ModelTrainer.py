@@ -1,4 +1,4 @@
-from DataGenerator import DataGenerator
+from DataGenerator import SimpleDataGeneratorGetter
 from VGG16AutoEncoderGenerator import VGG16AutoEncoderGenerator
 import os
 
@@ -28,19 +28,19 @@ if __name__ == '__main__':
     base_data_source_dir = 'data_source'
 
     vgg16_auto_encoder_generator.auto_encoder.fit_generator(
-        generator=DataGenerator(
+        generator=SimpleDataGeneratorGetter().get_generator(
             data_source_dir=os.path.join(base_data_source_dir, "training"),
             batch_size=64
-        ).generate_batch_of_data_pair_tuple(),
+        ).infinitely_generate_batch_of_data_pair_tuple(),
         steps_per_epoch=300, epochs=150, verbose=2,
     )
 
     print(vgg16_auto_encoder_generator.auto_encoder.metrics_names)
     scores = vgg16_auto_encoder_generator.auto_encoder.evaluate_generator(
-        generator=DataGenerator(
+        generator=SimpleDataGeneratorGetter().get_generator(
             data_source_dir=os.path.join(base_data_source_dir, "testing"),
             batch_size=100
-        ).generate_batch_of_data_pair_tuple(),
+        ).infinitely_generate_batch_of_data_pair_tuple(),
         steps=100
     )
     print(scores)
@@ -53,7 +53,7 @@ if __name__ == '__main__':
         os.path.join(model_and_weight_storing_dir, 'encoder_weight.h5')
     )
 
-    print("save auto encoder as 'auto_encoder.json' and 'auto_encoder_weight.h5")
+    print("save auto encoder as 'auto_encoder_model.json' and 'auto_encoder_weight.h5")
     save_model_as_json(
         vgg16_auto_encoder_generator.auto_encoder, os.path.join(model_and_weight_storing_dir, "auto_encoder_model.json")
     )
