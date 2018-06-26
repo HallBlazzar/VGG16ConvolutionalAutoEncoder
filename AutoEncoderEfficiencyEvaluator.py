@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
     testing_data_generator = SimpleDataGeneratorGetter().get_generator(
         data_source_dir=os.path.join(base_data_source_dir, "testing"), batch_size=1
-    ).generate_batch_of_data_pair_tuple()
+    ).infinitely_generate_batch_of_data_pair_tuple()
 
     image_saving_dir = os.path.join(ApplicationDirPathGetter().execute(), "auto_encoder")
     os.makedirs(image_saving_dir, exist_ok=True)
