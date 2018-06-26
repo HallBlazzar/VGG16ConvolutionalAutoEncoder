@@ -3,6 +3,7 @@ import sys
 import numpy as np
 import cv2
 import math
+import itertools
 
 
 class RandomizeKFoldDataGeneratorPairGenerator:
@@ -51,8 +52,14 @@ class DataGenerator:
         self.__batch_size = batch_size
 
     def infinitely_generate_batch_of_data_pair_tuple(self):
-        while True:
-            yield next(self.generate_batch_of_data_pair_tuple())
+        file_to_convert = list()
+        for file in itertools.cycle(self.__data_file_list):
+            if len(file_to_convert) < self.__batch_size:
+                file_to_convert.append(file)
+            else:
+                pre_processed_data = DataConverter().read_data_then_expand_and_standardize(file_to_convert)
+                yield pre_processed_data, pre_processed_data
+                file_to_convert = list()
 
     def generate_batch_of_data_pair_tuple(self):
         for start_index in range(0, len(self.__data_file_list), self.__batch_size):

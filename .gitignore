@@ -113,3 +113,4 @@ model_and_weight/*
 !model_and_weight/vgg16_weights_notop.h5
 
 auto_encoder/
+EncoderEvaluator.py

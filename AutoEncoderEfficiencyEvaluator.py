@@ -44,12 +44,13 @@ if __name__ == '__main__':
         auto_encoder = model_from_json(file.read())
 
     auto_encoder.load_weights(os.path.join(model_and_weight_storing_dir, 'auto_encoder_weight.h5'))
+    print(auto_encoder.summary())
 
     base_data_source_dir = "data_source"
 
-    testing_data_generator = SimpleDataGeneratorGetter.get_generator(
+    testing_data_generator = SimpleDataGeneratorGetter().get_generator(
         data_source_dir=os.path.join(base_data_source_dir, "testing"), batch_size=1
-    ).infinitely_generate_batch_of_data_pair_tuple()
+    ).generate_batch_of_data_pair_tuple()
 
     image_saving_dir = os.path.join(ApplicationDirPathGetter().execute(), "auto_encoder")
     os.makedirs(image_saving_dir, exist_ok=True)

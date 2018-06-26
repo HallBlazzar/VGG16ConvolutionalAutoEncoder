@@ -1,5 +1,6 @@
 from DataGenerator import SimpleDataGeneratorGetter
 from VGG16AutoEncoderGenerator import VGG16AutoEncoderGenerator
+from keras.callbacks import ModelCheckpoint
 import os
 
 
@@ -33,6 +34,12 @@ if __name__ == '__main__':
             batch_size=64
         ).infinitely_generate_batch_of_data_pair_tuple(),
         steps_per_epoch=300, epochs=150, verbose=2,
+        callbacks=[
+            ModelCheckpoint(
+                filepath=os.path.join(model_and_weight_storing_dir, "auto_encoder_model_weight_checkpoint.h5"),
+                save_weights_only=True, verbose=1
+            )
+        ]
     )
 
     print(vgg16_auto_encoder_generator.auto_encoder.metrics_names)
